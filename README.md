@@ -16,7 +16,7 @@ The extension utilizes a proximity-based Regular Expression to identify restrict
 ```javascript
 // Logic for identifying negation near core terms
 const regex = /\b(no|not|unable)\s*(?:\w+\s*){0,3}(sponsorship|visa|citizen)/gi;
-
+```
 ## Installation
 
 1. Clone this repository.
