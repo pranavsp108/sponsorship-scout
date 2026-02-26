@@ -1,0 +1,27 @@
+/* The Status Indicator Dot */
+#sponsorship-scout-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    z-index: 999999; /* Ensure it stays on top of everything */
+    display: none;    /* Hidden by default */
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    cursor: help;
+  }
+  
+  /* Red for "Found Restriction" */
+  .indicator-danger {
+    background-color: #ff4444;
+    border: 2px solid #ffffff;
+    display: block !important;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
+  }
