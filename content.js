@@ -1,4 +1,4 @@
-const coreTerms = ["sponsorship", "visa", "citizen", "resident", "green card"];
+const coreTerms = ["sponsorship", "visa", "citizen", "resident", "green card", "clearance"];
 const qualifiers = ["no", "not", "unable", "cannot", "don't", "doesn't", "must be", "require"];
 const smartRegex = new RegExp(`\\b(${qualifiers.join('|')})\\s*(?:\\w+\\s*){0,3}(${coreTerms.join('|')})|(${coreTerms.join('|')})\\s*(?:\\w+\\s*){0,3}(${qualifiers.join('|')})`, 'gi');
 
