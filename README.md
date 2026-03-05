@@ -5,8 +5,9 @@
 ## Core Features
 
 * **Automated Scanning:** Detects phrases related to visa support, citizenship, and work authorization.
-* **Sticky Indicator:** A pulsing status dot in the top-right corner alerts users to restrictive terms without requiring them to scroll.
-* **Dynamic Content Support:** Uses `MutationObserver` to process content on Single Page Applications like LinkedIn and Workday.
+* **Interactive Indicator:** A pulsing status dot in the top-left corner alerts users to restrictive terms. 
+* **One-Click Navigation:** Clicking the status indicator automatically scrolls the page to the first detected sponsorship term.
+* **Dynamic Content Support:** Uses `MutationObserver` with debouncing to process content on Single Page Applications like LinkedIn and Workday without performance lag.
 * **Privacy-Focused:** Performs all scanning locally within the browser.
 
 ## Technical Implementation
@@ -16,19 +17,34 @@ The extension utilizes a proximity-based Regular Expression to identify restrict
 ```javascript
 // Logic for identifying negation near core terms
 const regex = /\b(no|not|unable)\s*(?:\w+\s*){0,3}(sponsorship|visa|citizen)/gi;
-```
+
+## Performance Optimization
+
+To maintain a low memory footprint and prevent UI blocking, the extension employs:
+
+- **TreeWalker API:** Efficiently traverses text nodes without full DOM re-renders.
+
+- **Debouncing:** Limits scanning frequency during rapid page mutations (e.g., infinite scrolling).
+
+- **Smooth Navigation:** Implements `scrollIntoView` logic for a seamless user experience when jumping to highlighted text.
+
+---
+
 ## Installation
 
 1. Clone this repository.
+
 2. Navigate to `chrome://extensions/` in Google Chrome.
+
 3. Enable **Developer mode**.
+
 4. Click **Load unpacked** and select the project directory.
 
 ## Project Structure
 
 * `manifest.json`: Extension configuration (Manifest V3).
-* `content.js`: Main logic for DOM traversal and term detection.
-* `styles.css`: UI styling for highlights and the status indicator.
+* `content.js`: Main logic for DOM traversal, debouncing and term navigation.
+* `styles.css`: UI styling for the localized highlights and the status indicator.
 
 ## License
 

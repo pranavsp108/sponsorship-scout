@@ -1,15 +1,16 @@
 /* The Status Indicator Dot */
 #sponsorship-scout-indicator {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 25px;
-    height: 25px;
+    top: 15px;
+    left: 15px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     z-index: 999999; /* Ensure it stays on top of everything */
     display: none;    /* Hidden by default */
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    cursor: help;
+    box-shadow: 0 0 8px rgba(0,0,0,0.4);
+    cursor: pointer;
+    border: 1.5px solid #ffffff;
   }
   
   /* Red for "Found Restriction" */

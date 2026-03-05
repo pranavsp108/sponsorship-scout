@@ -2,7 +2,7 @@ const coreTerms = ["sponsorship", "visa", "citizen", "resident", "green card", "
 const qualifiers = ["no", "not", "unable", "cannot", "don't", "doesn't", "must be", "require"];
 const smartRegex = new RegExp(`\\b(${qualifiers.join('|')})\\s*(?:\\w+\\s*){0,3}(${coreTerms.join('|')})|(${coreTerms.join('|')})\\s*(?:\\w+\\s*){0,3}(${qualifiers.join('|')})`, 'gi');
 
-// 1. Debounce function to limit how often the scanner runs
+// 1. Debounce function to limit scanner frequency
 function debounce(func, timeout = 500) {
   let timer;
   return (...args) => {
@@ -11,42 +11,54 @@ function debounce(func, timeout = 500) {
   };
 }
 
+// 2. Initialize Indicator with Click-to-Scroll logic
+if (!document.getElementById('sponsorship-scout-indicator')) {
+  const indicator = document.createElement('div');
+  indicator.id = 'sponsorship-scout-indicator';
+  indicator.title = "Click to jump to sponsorship details";
+  
+  indicator.addEventListener('click', () => {
+    // Finds the first highlight on the current page
+    const firstHighlight = document.querySelector('.sponsorship-highlight');
+    if (firstHighlight) {
+      firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+
+  document.body.appendChild(indicator);
+}
+
 function scanAndHighlight() {
-  // Use a TreeWalker: The most memory-efficient way to find text in the DOM
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
   let node;
+  let matchesFound = false;
 
   while (node = walker.nextNode()) {
     const parent = node.parentElement;
     
-    // Skip if already highlighted or in a script/style tag
     if (!parent || parent.classList.contains('sponsorship-highlight') || 
         ['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parent.tagName)) {
       continue;
     }
 
     if (smartRegex.test(node.nodeValue)) {
+      matchesFound = true;
       const span = document.createElement('span');
       span.innerHTML = node.nodeValue.replace(smartRegex, '<mark class="sponsorship-highlight">$&</mark>');
       node.parentNode.replaceChild(span, node);
-      
-      const indicator = document.getElementById('sponsorship-scout-indicator');
-      if (indicator) indicator.classList.add('indicator-danger');
     }
+  }
+
+  // Update visual indicator if any highlights exist
+  const indicator = document.getElementById('sponsorship-scout-indicator');
+  if (indicator && (matchesFound || document.querySelector('.sponsorship-highlight'))) {
+    indicator.classList.add('indicator-danger');
   }
 }
 
-// 2. Initialize the Indicator once
-if (!document.getElementById('sponsorship-scout-indicator')) {
-  const indicator = document.createElement('div');
-  indicator.id = 'sponsorship-scout-indicator';
-  document.body.appendChild(indicator);
-}
-
-// 3. Run initial scan
+// 3. Initial execution and Observer setup
 scanAndHighlight();
 
-// 4. Use the Debounced observer to handle dynamic content (LinkedIn/Workday)
 const debouncedScan = debounce(scanAndHighlight, 500);
 const observer = new MutationObserver(() => {
   debouncedScan();
