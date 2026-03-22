@@ -1,6 +1,11 @@
+// Optimized to find negative statements while ignoring neutral questions
 const coreTerms = ["sponsorship", "visa", "citizen", "resident", "green card", "clearance"];
-const qualifiers = ["no", "not", "unable", "cannot", "don't", "doesn't", "must be", "require"];
-const smartRegex = new RegExp(`\\b(${qualifiers.join('|')})\\s*(?:\\w+\\s*){0,3}(${coreTerms.join('|')})|(${coreTerms.join('|')})\\s*(?:\\w+\\s*){0,3}(${qualifiers.join('|')})`, 'gi');
+const negations = ["no", "not", "unable", "cannot", "don't", "doesn't", "won't", "restricted"];
+
+// This regex specifically looks for Negation + Term (e.g., "no sponsorship" or "doesn't offer visa")
+// It avoids triggering on sentences that start with "Would you" or "Will you"
+const smartRegex = new RegExp(`\\b(${negations.join('|')})\\s*(?:\\w+\\s*){0,3}(${coreTerms.join('|')})`, 'gi');
+
 
 // 1. Debounce function to limit scanner frequency
 function debounce(func, timeout = 500) {
@@ -36,6 +41,7 @@ function scanAndHighlight() {
   while (node = walker.nextNode()) {
     const parent = node.parentElement;
     
+    // Skip already highlighted nodes or non-visual tags
     if (!parent || parent.classList.contains('sponsorship-highlight') || 
         ['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(parent.tagName)) {
       continue;
@@ -44,15 +50,22 @@ function scanAndHighlight() {
     if (smartRegex.test(node.nodeValue)) {
       matchesFound = true;
       const span = document.createElement('span');
+      // Wraps negative statements in the light red mark
       span.innerHTML = node.nodeValue.replace(smartRegex, '<mark class="sponsorship-highlight">$&</mark>');
       node.parentNode.replaceChild(span, node);
     }
   }
 
-  // Update visual indicator if any highlights exist
+  // Visual Indicator Logic
   const indicator = document.getElementById('sponsorship-scout-indicator');
-  if (indicator && (matchesFound || document.querySelector('.sponsorship-highlight'))) {
-    indicator.classList.add('indicator-danger');
+  if (indicator) {
+    // Check for existing highlights or new matches from this pass
+    if (matchesFound || document.querySelector('.sponsorship-highlight')) {
+      indicator.classList.add('indicator-danger');
+    } else {
+      // CRITICAL: Remove the red dot if no negative statements are present
+      indicator.classList.remove('indicator-danger');
+    }
   }
 }
 

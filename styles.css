@@ -1,28 +1,46 @@
+/* Sponsorship Highlights - Light Red Background */
+.sponsorship-highlight {
+  background-color: #ffcdd2 !important; /* Light red background */
+  color: #b71c1c !important;           /* Dark red text for better contrast */
+  font-weight: bold;
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+/* Gmail Job Role Highlights - Light Green */
+.role-highlight {
+  background-color: #e8f5e9 !important; /* Professional light green */
+  color: #2e7d32 !important;           /* Dark green for readability */
+  font-weight: bold;
+  padding: 1px 3px;
+  border-radius: 2px;
+  border-bottom: 2px solid #4caf50;
+}
+
 /* The Status Indicator Dot */
 #sponsorship-scout-indicator {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    z-index: 999999; /* Ensure it stays on top of everything */
-    display: none;    /* Hidden by default */
-    box-shadow: 0 0 8px rgba(0,0,0,0.4);
-    cursor: pointer;
-    border: 1.5px solid #ffffff;
-  }
-  
-  /* Red for "Found Restriction" */
-  .indicator-danger {
-    background-color: #ff4444;
-    border: 2px solid #ffffff;
-    display: block !important;
-    animation: pulse 2s infinite;
-  }
-  
-  @keyframes pulse {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
-  }
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  z-index: 999999;
+  display: none;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  cursor: pointer;
+  border: 1.5px solid #ffffff;
+}
+
+/* Pulse animation for active alerts */
+.indicator-danger {
+  background-color: #ff4444;
+  display: block !important;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 68, 68, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 68, 68, 0); }
+}
