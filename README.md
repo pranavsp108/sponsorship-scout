@@ -14,7 +14,7 @@
 
 The extension utilizes a proximity-based Regular Expression to identify restrictive language even when terms are non-contiguous. 
 
-```javascript
+
 // Logic for identifying negation near core terms
 const regex = /\b(no|not|unable)\s*(?:\w+\s*){0,3}(sponsorship|visa|citizen)/gi;
 
