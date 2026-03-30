@@ -7,6 +7,23 @@ const negations = ["no", "not", "unable", "cannot", "don't", "doesn't", "won't",
 const smartRegex = new RegExp(`\\b(${negations.join('|')})\\s*(?:\\w+\\s*){0,3}(${coreTerms.join('|')})`, 'gi');
 
 
+// 0. Initialize the Indicator ONLY if document.body exists
+if (document.body && !document.getElementById('sponsorship-scout-indicator')) {
+  const indicator = document.createElement('div');
+  indicator.id = 'sponsorship-scout-indicator';
+  indicator.title = "Click to jump to restrictive terms";
+  
+  indicator.addEventListener('click', () => {
+    const firstHighlight = document.querySelector('.sponsorship-highlight');
+    if (firstHighlight) {
+      firstHighlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+  
+  document.body.appendChild(indicator);
+}
+
+
 // 1. Debounce function to limit scanner frequency
 function debounce(func, timeout = 500) {
   let timer;
